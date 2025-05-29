@@ -7,7 +7,7 @@ import * as utils from './utils';
 let decorationType: vscode.TextEditorDecorationType;
 
 export function activate(context: vscode.ExtensionContext) {
-  utils.showProgress('Alias View is now active!');
+  utils.showProgress('Alias View is now active!', 3);
 
   setSettingsFile();
 
@@ -102,7 +102,7 @@ export function setSettingsFile() {
     fs.writeFileSync(settingsFilePath, JSON.stringify({}, null, 2));
     vscode.window.showInformationMessage('Alias mapping file created at .vscode/alias-mapping.json');
   } else {
-    utils.showProgress('Alias mapping file found.');
+    utils.showProgress('Alias mapping file found.', 3);
   }
   vscode.commands.executeCommand('vscode.open', vscode.Uri.file(settingsFilePath));
 }

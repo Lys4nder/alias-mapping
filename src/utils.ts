@@ -8,7 +8,7 @@ const sleep = (time: number) => {
   });
 };
 
-const showProgress = async (message: string) => {
+const showProgress = async (message: string, seconds: number) => {
   await window.withProgress(
     {
       location: ProgressLocation.Notification,
@@ -16,7 +16,7 @@ const showProgress = async (message: string) => {
     },
     async (progress, token) => {
       return new Promise(async (resolve) => {
-        const seconds = 3;
+        // const seconds = 3;
         for (let i = 0; i < seconds; i++) {
           progress.report({
             increment: (100 / seconds),
