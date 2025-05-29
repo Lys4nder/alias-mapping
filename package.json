@@ -15,15 +15,15 @@
     "commands": [
       {
         "command": "aliasView.toggleAliases",
-        "title": "Toggle Aliases"
+        "title": "Alias View: Toggle On"
       },
       {
-        "command": "aliasView.showAliases",
-        "title": "Show Aliases"
+        "command": "aliasView.openAliasFile",
+        "title": "Alias View: Show Aliases File"
       },
       {
         "command": "aliasView.hideAliases",
-        "title": "Hide Aliases"
+        "title": "Alias View: Hide"
       }
     ]
   },
