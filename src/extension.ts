@@ -100,9 +100,9 @@ export function setSettingsFile() {
   const settingsFilePath = path.join(vscode.workspace.rootPath || '', '.vscode', 'alias-mapping.json');
   if (!fs.existsSync(settingsFilePath)) {
     fs.writeFileSync(settingsFilePath, JSON.stringify({}, null, 2));
-    utils.showProgress('Alias mapping file created at .vscode/alias-mapping.json');
+    vscode.window.showInformationMessage('Alias mapping file created at .vscode/alias-mapping.json');
   } else {
-    vscode.window.showInformationMessage('Alias mapping file found.');
+    utils.showProgress('Alias mapping file found.');
   }
   vscode.commands.executeCommand('vscode.open', vscode.Uri.file(settingsFilePath));
 }
