@@ -2,12 +2,14 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as utils from './utils';
 
 let decorationType: vscode.TextEditorDecorationType;
 
 export function activate(context: vscode.ExtensionContext) {
+  utils.showProgress('Alias View is now active!');
+
   setSettingsFile();
-  vscode.window.showInformationMessage('Alias View extension is now active!');
 
   const enable = vscode.commands.registerCommand('aliasView.toggleAliases', () => {
     const editor = vscode.window.activeTextEditor;
@@ -98,7 +100,7 @@ export function setSettingsFile() {
   const settingsFilePath = path.join(vscode.workspace.rootPath || '', '.vscode', 'alias-mapping.json');
   if (!fs.existsSync(settingsFilePath)) {
     fs.writeFileSync(settingsFilePath, JSON.stringify({}, null, 2));
-    vscode.window.showInformationMessage('Alias mapping file created at .vscode/alias-mapping.json');
+    utils.showProgress('Alias mapping file created at .vscode/alias-mapping.json');
   } else {
     vscode.window.showInformationMessage('Alias mapping file found.');
   }
