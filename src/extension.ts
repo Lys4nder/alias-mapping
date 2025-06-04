@@ -1,10 +1,9 @@
-// src/extension.ts
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as utils from './utils';
 
-let decorationType: vscode.TextEditorDecorationType;
+let decorationType: vscode.TextEditorDecorationType | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
   utils.showProgress('Alias View is now active!', 3);
@@ -18,13 +17,18 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
+  const close = vscode.commands.registerCommand('aliasView.hideAliases', () => {
+    deactivateAliases();
+  });
+
   const openFile = vscode.commands.registerCommand('aliasView.openAliasFile', () => {
     const aliasFilePath = path.join(vscode.workspace.rootPath || '', '.vscode', 'alias-mapping.json');
     if (fs.existsSync(aliasFilePath)) {
       vscode.commands.executeCommand('vscode.open', vscode.Uri.file(aliasFilePath));
     } else {
       vscode.window.showWarningMessage('Alias mapping file not found. Please create .vscode/alias-mapping.json');
-    }});
+    }
+  });
 
   const tabChange = vscode.window.onDidChangeActiveTextEditor((editor) => {
     if (editor) {
@@ -35,21 +39,27 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(enable);
   context.subscriptions.push(openFile);
   context.subscriptions.push(tabChange);
+  context.subscriptions.push(close);
+
+  // Listen for document save and change events
+  context.subscriptions.push(
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      const editor = vscode.window.activeTextEditor;
+      if (editor && document === editor.document) {
+        applyAliases(editor);
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      const editor = vscode.window.activeTextEditor;
+      if (editor && event.document === editor.document) {
+        applyAliases(editor);
+      }
+    })
+  );
 }
-
-vscode.workspace.onDidSaveTextDocument((document) => {
-  const editor = vscode.window.activeTextEditor;
-  if (editor && document === editor.document) {
-    applyAliases(editor);
-  }
-});
-
-vscode.workspace.onDidChangeTextDocument((event) => {
-  const editor = vscode.window.activeTextEditor;
-  if (editor && event.document === editor.document) {
-    applyAliases(editor);
-  }
-});
 
 function applyAliases(editor: vscode.TextEditor) {
   const aliasFilePath = path.join(vscode.workspace.rootPath || '', '.vscode', 'alias-mapping.json');
@@ -59,9 +69,15 @@ function applyAliases(editor: vscode.TextEditor) {
     return;
   }
 
-  const aliasMap: Record<string, string> = JSON.parse(fs.readFileSync(aliasFilePath, 'utf-8'));
-  const text = editor.document.getText();
+  let aliasMap: Record<string, string> = {};
+  try {
+    aliasMap = JSON.parse(fs.readFileSync(aliasFilePath, 'utf-8'));
+  } catch (e) {
+    vscode.window.showWarningMessage('Failed to parse alias-mapping.json. Please check the file format.');
+    return;
+  }
 
+  const text = editor.document.getText();
   const decorationsArray: vscode.DecorationOptions[] = [];
   for (const [original, alias] of Object.entries(aliasMap)) {
     const regex = new RegExp(`\\b${original}\\b`, 'g');
@@ -91,8 +107,16 @@ function applyAliases(editor: vscode.TextEditor) {
 }
 
 export function deactivate() {
+  deactivateAliases();
+}
+
+export function deactivateAliases() {
   if (decorationType) {
+    for (const editor of vscode.window.visibleTextEditors) {
+      editor.setDecorations(decorationType, []);
+    }
     decorationType.dispose();
+    decorationType = undefined;
   }
 }
 
