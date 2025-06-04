@@ -3,6 +3,9 @@
   "displayName": "aliases",
   "description": "Show variable aliases as ghost text",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lys4nder/alias-mapping"},
   "engines": {
     "vscode": "^1.99.0"
   },

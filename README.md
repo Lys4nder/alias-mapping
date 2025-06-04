@@ -69,10 +69,4 @@ Contributions are welcome! If you’d like to report a bug, suggest a feature, o
 
 ---
 
-## License
-
-This extension is licensed under the [MIT License](LICENSE).
-
----
-
 ## Enjoy coding with Alias View!
