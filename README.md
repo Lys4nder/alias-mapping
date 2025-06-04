@@ -15,8 +15,6 @@ Alias View is a Visual Studio Code extension that enhances your coding experienc
 
 Here’s how it looks in action:
 
-![Alias View Example](images/alias-view-example.png)
-
 ---
 
 ## Requirements
