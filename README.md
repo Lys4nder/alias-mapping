@@ -37,18 +37,30 @@ This extension provides the following commands:
 
 - **Toggle Aliases**: `aliasView.toggleAliases`  
     Enable or disable alias visualization in the editor.
+- **Open Alias Mapping File**: `aliasView.openAliasFile`  
+    Create (if missing) and open the workspace alias mapping file.
+- **Hide**: `aliasView.hideAliases`  
+    Disable alias visualization for the current workspace.
 
 ---
 
 ## Extension Settings
 
-This extension does not currently add any custom settings. Future updates may include configuration options for alias styling and behavior.
+- `aliasView.enabled` (boolean): Enable or disable aliases.
+- `aliasView.mappingFile` (string): Relative workspace path to the mapping file.
+- `aliasView.prefix` (string): Prefix shown before each alias.
+- `aliasView.ghostTextColor` (string): Alias ghost text color.
+- `aliasView.ghostTextMargin` (string): Alias ghost text margin.
+- `aliasView.refreshOnType` (boolean): Recompute while typing.
+- `aliasView.refreshOnSave` (boolean): Recompute on save.
+- `aliasView.debounceMs` (number): Debounce delay for updates.
+- `aliasView.silentWarnings` (boolean): Log diagnostics silently instead of popup warnings.
 
 ---
 
 ## Known Issues
 
-- If the `.vscode/alias-mapping.json` file is missing or invalid, the extension will display a warning message.
+- If the mapping file is missing or invalid, diagnostics are silent by default (`aliasView.silentWarnings: true`).
 - Large files with many aliases may experience slight performance degradation.
 
 ---
