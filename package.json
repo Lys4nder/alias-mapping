@@ -12,23 +12,78 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:aliasView.toggleAliases",
+    "onCommand:aliasView.openAliasFile",
+    "onCommand:aliasView.hideAliases"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "aliasView.toggleAliases",
-        "title": "Alias View: Toggle On"
+        "title": "Alias View: Toggle Aliases"
       },
       {
         "command": "aliasView.openAliasFile",
-        "title": "Alias View: Show Aliases File"
+        "title": "Alias View: Open Alias Mapping File"
       },
       {
         "command": "aliasView.hideAliases",
         "title": "Alias View: Hide"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Alias View",
+      "properties": {
+        "aliasView.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable alias decorations in editors."
+        },
+        "aliasView.mappingFile": {
+          "type": "string",
+          "default": ".vscode/alias-mapping.json",
+          "description": "Relative workspace path to alias mapping file."
+        },
+        "aliasView.prefix": {
+          "type": "string",
+          "default": "←",
+          "description": "Prefix shown before each alias decoration."
+        },
+        "aliasView.ghostTextColor": {
+          "type": "string",
+          "default": "#999999",
+          "description": "Color used for alias ghost text."
+        },
+        "aliasView.ghostTextMargin": {
+          "type": "string",
+          "default": "10px 0 0 10px",
+          "description": "CSS-like margin used for alias ghost text."
+        },
+        "aliasView.refreshOnType": {
+          "type": "boolean",
+          "default": true,
+          "description": "Refresh aliases while typing."
+        },
+        "aliasView.refreshOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Refresh aliases when a document is saved."
+        },
+        "aliasView.debounceMs": {
+          "type": "number",
+          "default": 150,
+          "minimum": 0,
+          "description": "Debounce delay in milliseconds for document change updates."
+        },
+        "aliasView.silentWarnings": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled, diagnostics are logged silently instead of showing warning popups."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
